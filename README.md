@@ -1,5 +1,5 @@
 # match2d
-A little C++ program to locate occurences of binary square matrices (the patterns) in larger binary square matrices. The algorithm is an extension of Aho-Corasick to 2D. The program takes as input two numbers n and m where n is the dimension of the large matrix and m is the dimension of the pattern-matrix (m <= n). The program then reads n lines each containing a binary string of length n, then it reads m lines each containing a binary string of length m. The program outputs where the mxm matrix occurs as a sub-matrix of the nxn matrix.
+A little C++ program to locate occurrences of binary square matrices (the patterns) in larger binary square matrices. The algorithm is an extension of Aho-Corasick to 2D. The program takes as input two numbers n and m where n is the dimension of the large matrix and m is the dimension of the pattern-matrix (m <= n). The program then reads n lines each containing a binary string of length n, then it reads m lines each containing a binary string of length m. The program outputs where the mxm matrix occurs as a sub-matrix of the nxn matrix.
 
 Sample input/output:
 
