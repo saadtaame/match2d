@@ -4,7 +4,7 @@ A little C++ program to locate occurences of binary square matrices (the pattern
 Sample input/output:
 
 input:
-<code>
+<pre>
 12 2
 101110111011
 111010111011
@@ -20,13 +20,13 @@ input:
 111010111011
 11
 10
-</code>
+</pre>
 
 output:
-<code>
+<pre>
 match at (2,0)
 match at (1,1)
 match at (0,2)
 match at (6,2)
 match at (2,10)
-</code>
+</pre>
