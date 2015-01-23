@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <string>
 #include <queue>
@@ -17,7 +16,7 @@ int p[N]; /* pattern to search for in columns of A */
 
 struct Node
 {   Node *a[2]; /* alphabet is binary */
-    Node *suff; /* pointer to node with proper prefix = longest proper suffix of this node */
+    Node *suff; /* pointer to node whose prefix = longest proper suffix of this node */
     int flag;
 
     Node()
@@ -91,8 +90,11 @@ void match(Node *x, int j)
 }
 
 int match2d(Node *x)
-{   /* init */
-    int matches = 0;
+{   int matches = 0;
+    static int z[M+N];
+    static int z_str[M+N+1];
+
+    /* init */
     memset(A, -1, sizeof(A));
 
     /* fill the A matrix */
@@ -100,29 +102,48 @@ int match2d(Node *x)
     {   match(x, i);
     }
 
-    /* search for pattern p in columns of A */
-
-    /* build pattern string */
-    char pat[M+1];
+    /* build string for z algorithm */
+    z_str[n+m] = -2; /* acts like `\0` for strings */
     for(int i = 0; i < m; i++)
-    {   pat[i] = p[i] + '0';
+    {   z_str[i] = p[i];
     }
-    pat[m] = '\0';
 
-    char col[N+1];
     for(int i = 0; i < n; i++)
-    {   /* search for p in column i */
+    {   /* search for pattern in column i */
         for(int j = 0; j < n; j++)
-        {   if(A[j][i] != -1) col[j] = '0' + A[j][i];
-            else col[j] = '-';
+        {   z_str[j + m] = A[j][i];
         }
-        col[n] = '\0';
 
-        char *ptr = col;
-        while((ptr = strstr(ptr, pat)))
-        {   printf("match at (%d,%d)\n", ptr - col, i);
-            matches++;
-            ptr++;
+        /* run z algorithm */
+        int l, r;
+        l = r = 0;
+        z[0] = n + m;
+        for(int j = 1; j < n + m; j++)
+        {   if(j > r)
+            {   l = r = j;
+                while(z_str[r] == z_str[r - l]) r++;
+                z[j] = r - l;
+                r--;
+            }
+            else
+            {   if(z[j - l] < r - j + 1)
+                {   z[j] = z[j - l];
+                }
+                else
+                {   l = j;
+                    while(z_str[r] == z_str[r - l]) r++;
+                    z[j] = r - l;
+                    r--;
+                }
+            }
+        }
+
+        /* locate matches */
+        for(int j = m; j < n + m; j++)
+        {   if(z[j] >= m)
+            {   printf("match at (%d,%d)\n", j - m, i);
+                matches++;
+            }
         }
     }
 
